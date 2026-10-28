@@ -1,0 +1,10 @@
+﻿__pycache__/
+*.pyc
+.pytest_cache/
+.coverage
+htmlcov/
+*.pt
+yolov8*.pt
+tests/fixtures/real/*.jpg
+.venv/
+venv/
