@@ -1,0 +1,35 @@
+services:
+  - type: web
+    name: market-vision-free
+    runtime: python
+    plan: free
+    region: frankfurt
+    buildCommand: pip install -r free_demo/requirements-backend.txt
+    startCommand: uvicorn free_demo.backend:app --host 0.0.0.0 --port $PORT --workers 1
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.11
+      - key: GROQ_API_KEY
+        sync: false
+      - key: GROQ_MODEL
+        value: qwen/qwen3.8-27b
+      - key: SERVICE_TOKEN
+        sync: false
+  - type: web
+    name: market-ai-free
+    runtime: python
+    plan: free
+    region: frankfurt
+    buildCommand: pip install -r free_demo/requirements-frontend.txt
+    startCommand: streamlit run free_demo/frontend.py --server.address 0.0.0.0 --server.port $PORT --server.headless true --browser.gatherUsageStats false
+    healthCheckPath: /_stcore/health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.11
+      - key: BACKEND_URL
+        sync: false
+      - key: SERVICE_TOKEN
+        sync: false
+      - key: APP_PASSWORD
+        sync: false
