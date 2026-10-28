@@ -17,7 +17,7 @@ Image.MAX_IMAGE_PIXELS = 20_000_000
 
 
 def authorize(x_service_token: str = Header(default="")):
-    expected = os.getenv("SERVICE_TOKEN", "")
+    expected = os.getenv("SERVICE_TOKEN", "").strip()
     if not expected:
         raise HTTPException(503, "Backend SERVICE_TOKEN is not configured.")
     if not hmac.compare_digest(x_service_token, expected):
@@ -39,7 +39,7 @@ information. Give relevant limitations without repetitive disclaimers or buy/sel
 
 
 def complete(messages, *, structured=False):
-    key = os.getenv("GROQ_API_KEY", "")
+    key = os.getenv("GROQ_API_KEY", "").strip()
     if not key:
         raise HTTPException(503, "Backend GROQ_API_KEY is missing.")
     try:
@@ -67,6 +67,12 @@ def complete(messages, *, structured=False):
 @app.get("/health")
 def health():
     return {"status": "ok", "mode": "groq_only", "configured": bool(os.getenv("GROQ_API_KEY"))}
+
+
+@app.get("/ready", dependencies=[Depends(authorize)])
+def ready():
+    """Check service authentication and configuration without spending API quota."""
+    return {"status": "ok", "configured": bool(os.getenv("GROQ_API_KEY", "").strip())}
 
 
 def analyze_bytes(raw, filename):
