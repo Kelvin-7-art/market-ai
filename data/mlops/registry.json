@@ -1,0 +1,427 @@
+[
+  {
+    "model_id": "model_rf_base",
+    "name": "Random Forest Base",
+    "model_type": "Random Forest",
+    "framework": "scikit-learn",
+    "stage": "Production",
+    "metrics": {
+      "accuracy": 0.834,
+      "auc": 0.8939999999999999,
+      "rmse": 0.0581
+    },
+    "last_trained": "2026-09-12T08:00:00+00:00",
+    "owner": "Aisha",
+    "tags": [
+      "AAPL",
+      "baseline"
+    ],
+    "description": "Random Forest Base for financial market research.",
+    "features": [
+      "MA20",
+      "RSI_14",
+      "MACD",
+      "Volume_Ratio"
+    ],
+    "training_snapshot": {
+      "rows": 1208,
+      "date_range": "2020-01-01 \u2192 2026-09-12",
+      "feature_count": 4,
+      "dataset": "market_factors_v1"
+    },
+    "versions": [
+      {
+        "version": "v2.0.1",
+        "metrics": {
+          "accuracy": 0.834,
+          "auc": 0.8939999999999999,
+          "rmse": 0.0581
+        },
+        "hyperparameters": {
+          "random_state": 42,
+          "n_estimators": 100
+        },
+        "artifact_path": "artifacts/model_rf_base/v2.0.1/model.joblib",
+        "created_at": "2026-09-12T08:00:00+00:00"
+      }
+    ],
+    "artifacts": [
+      {
+        "name": "model.joblib",
+        "path": "artifacts/model_rf_base/v2.0.1/model.joblib",
+        "type": "pickle/joblib"
+      },
+      {
+        "name": "feature_schema.json",
+        "path": "artifacts/model_rf_base/v2.0.1/feature_schema.json",
+        "type": "schema"
+      }
+    ],
+    "created_at": "2026-09-12T08:00:00+00:00",
+    "archived": false
+  },
+  {
+    "model_id": "model_xgb_adv",
+    "name": "XGBoost Advanced",
+    "model_type": "XGBoost",
+    "framework": "XGBoost",
+    "stage": "Staging",
+    "metrics": {
+      "accuracy": 0.912,
+      "auc": 0.972,
+      "rmse": 0.0308
+    },
+    "last_trained": "2026-09-11T08:00:00+00:00",
+    "owner": "Maya",
+    "tags": [
+      "SPY",
+      "factors"
+    ],
+    "description": "XGBoost Advanced for financial market research.",
+    "features": [
+      "MA20",
+      "RSI_14",
+      "MACD",
+      "Volume_Ratio"
+    ],
+    "training_snapshot": {
+      "rows": 1177,
+      "date_range": "2020-01-01 \u2192 2026-09-12",
+      "feature_count": 4,
+      "dataset": "market_factors_v1"
+    },
+    "versions": [
+      {
+        "version": "v2.0.2",
+        "metrics": {
+          "accuracy": 0.912,
+          "auc": 0.972,
+          "rmse": 0.0308
+        },
+        "hyperparameters": {
+          "random_state": 42,
+          "n_estimators": 125
+        },
+        "artifact_path": "artifacts/model_xgb_adv/v2.0.2/model.joblib",
+        "created_at": "2026-09-11T08:00:00+00:00"
+      }
+    ],
+    "artifacts": [
+      {
+        "name": "model.joblib",
+        "path": "artifacts/model_xgb_adv/v2.0.2/model.joblib",
+        "type": "pickle/joblib"
+      },
+      {
+        "name": "feature_schema.json",
+        "path": "artifacts/model_xgb_adv/v2.0.2/feature_schema.json",
+        "type": "schema"
+      }
+    ],
+    "created_at": "2026-09-12T08:00:00+00:00",
+    "archived": false
+  },
+  {
+    "model_id": "model_lgbm_opt",
+    "name": "LightGBM Optimized",
+    "model_type": "LightGBM",
+    "framework": "XGBoost",
+    "stage": "Production",
+    "metrics": {
+      "accuracy": 0.887,
+      "auc": 0.9470000000000001,
+      "rmse": 0.0395
+    },
+    "last_trained": "2026-09-10T08:00:00+00:00",
+    "owner": "Ravi",
+    "tags": [
+      "macro",
+      "production"
+    ],
+    "description": "LightGBM Optimized for financial market research.",
+    "features": [
+      "MA20",
+      "RSI_14",
+      "MACD",
+      "Volume_Ratio"
+    ],
+    "training_snapshot": {
+      "rows": 1146,
+      "date_range": "2020-01-01 \u2192 2026-09-12",
+      "feature_count": 4,
+      "dataset": "market_factors_v1"
+    },
+    "versions": [
+      {
+        "version": "v2.0.3",
+        "metrics": {
+          "accuracy": 0.887,
+          "auc": 0.9470000000000001,
+          "rmse": 0.0395
+        },
+        "hyperparameters": {
+          "random_state": 42,
+          "n_estimators": 150
+        },
+        "artifact_path": "artifacts/model_lgbm_opt/v2.0.3/model.joblib",
+        "created_at": "2026-09-10T08:00:00+00:00"
+      }
+    ],
+    "artifacts": [
+      {
+        "name": "model.joblib",
+        "path": "artifacts/model_lgbm_opt/v2.0.3/model.joblib",
+        "type": "pickle/joblib"
+      },
+      {
+        "name": "feature_schema.json",
+        "path": "artifacts/model_lgbm_opt/v2.0.3/feature_schema.json",
+        "type": "schema"
+      }
+    ],
+    "created_at": "2026-09-12T08:00:00+00:00",
+    "archived": false
+  },
+  {
+    "model_id": "model_svm_base",
+    "name": "SVM Base",
+    "model_type": "SVM",
+    "framework": "scikit-learn",
+    "stage": "Development",
+    "metrics": {
+      "accuracy": 0.801,
+      "auc": 0.861,
+      "rmse": 0.0696
+    },
+    "last_trained": "2026-09-09T08:00:00+00:00",
+    "owner": "Kai",
+    "tags": [
+      "classification"
+    ],
+    "description": "SVM Base for financial market research.",
+    "features": [
+      "MA20",
+      "RSI_14",
+      "MACD",
+      "Volume_Ratio"
+    ],
+    "training_snapshot": {
+      "rows": 1115,
+      "date_range": "2020-01-01 \u2192 2026-09-12",
+      "feature_count": 4,
+      "dataset": "market_factors_v1"
+    },
+    "versions": [
+      {
+        "version": "v1.0.4",
+        "metrics": {
+          "accuracy": 0.801,
+          "auc": 0.861,
+          "rmse": 0.0696
+        },
+        "hyperparameters": {
+          "random_state": 42,
+          "n_estimators": 175
+        },
+        "artifact_path": "artifacts/model_svm_base/v1.0.4/model.joblib",
+        "created_at": "2026-09-09T08:00:00+00:00"
+      }
+    ],
+    "artifacts": [
+      {
+        "name": "model.joblib",
+        "path": "artifacts/model_svm_base/v1.0.4/model.joblib",
+        "type": "pickle/joblib"
+      },
+      {
+        "name": "feature_schema.json",
+        "path": "artifacts/model_svm_base/v1.0.4/feature_schema.json",
+        "type": "schema"
+      }
+    ],
+    "created_at": "2026-09-12T08:00:00+00:00",
+    "archived": false
+  },
+  {
+    "model_id": "model_nn_deep",
+    "name": "Neural Network Deep",
+    "model_type": "Neural Network",
+    "framework": "PyTorch",
+    "stage": "Staging",
+    "metrics": {
+      "accuracy": 0.864,
+      "auc": 0.9239999999999999,
+      "rmse": 0.0476
+    },
+    "last_trained": "2026-09-08T08:00:00+00:00",
+    "owner": "Aisha",
+    "tags": [
+      "sentiment"
+    ],
+    "description": "Neural Network Deep for financial market research.",
+    "features": [
+      "MA20",
+      "RSI_14",
+      "MACD",
+      "Volume_Ratio"
+    ],
+    "training_snapshot": {
+      "rows": 1084,
+      "date_range": "2020-01-01 \u2192 2026-09-12",
+      "feature_count": 4,
+      "dataset": "market_factors_v1"
+    },
+    "versions": [
+      {
+        "version": "v1.0.5",
+        "metrics": {
+          "accuracy": 0.864,
+          "auc": 0.9239999999999999,
+          "rmse": 0.0476
+        },
+        "hyperparameters": {
+          "random_state": 42,
+          "n_estimators": 200
+        },
+        "artifact_path": "artifacts/model_nn_deep/v1.0.5/model.joblib",
+        "created_at": "2026-09-08T08:00:00+00:00"
+      }
+    ],
+    "artifacts": [
+      {
+        "name": "model.joblib",
+        "path": "artifacts/model_nn_deep/v1.0.5/model.joblib",
+        "type": "pickle/joblib"
+      },
+      {
+        "name": "feature_schema.json",
+        "path": "artifacts/model_nn_deep/v1.0.5/feature_schema.json",
+        "type": "schema"
+      }
+    ],
+    "created_at": "2026-09-12T08:00:00+00:00",
+    "archived": false
+  },
+  {
+    "model_id": "model_lstm_tuned",
+    "name": "LSTM Tuned",
+    "model_type": "LSTM",
+    "framework": "PyTorch",
+    "stage": "Production",
+    "metrics": {
+      "accuracy": 0.923,
+      "auc": 0.98,
+      "rmse": 0.0269
+    },
+    "last_trained": "2026-09-07T08:00:00+00:00",
+    "owner": "Maya",
+    "tags": [
+      "forecasting",
+      "BTC"
+    ],
+    "description": "LSTM Tuned for financial market research.",
+    "features": [
+      "MA20",
+      "RSI_14",
+      "MACD",
+      "Volume_Ratio"
+    ],
+    "training_snapshot": {
+      "rows": 1053,
+      "date_range": "2020-01-01 \u2192 2026-09-12",
+      "feature_count": 4,
+      "dataset": "market_factors_v1"
+    },
+    "versions": [
+      {
+        "version": "v1.0.6",
+        "metrics": {
+          "accuracy": 0.923,
+          "auc": 0.98,
+          "rmse": 0.0269
+        },
+        "hyperparameters": {
+          "random_state": 42,
+          "n_estimators": 225
+        },
+        "artifact_path": "artifacts/model_lstm_tuned/v1.0.6/model.joblib",
+        "created_at": "2026-09-07T08:00:00+00:00"
+      }
+    ],
+    "artifacts": [
+      {
+        "name": "model.joblib",
+        "path": "artifacts/model_lstm_tuned/v1.0.6/model.joblib",
+        "type": "pickle/joblib"
+      },
+      {
+        "name": "feature_schema.json",
+        "path": "artifacts/model_lstm_tuned/v1.0.6/feature_schema.json",
+        "type": "schema"
+      }
+    ],
+    "created_at": "2026-09-12T08:00:00+00:00",
+    "archived": false
+  },
+  {
+    "model_id": "model_transformer",
+    "name": "Transformer Fine-tuned",
+    "model_type": "Transformer",
+    "framework": "PyTorch",
+    "stage": "Archived",
+    "metrics": {
+      "accuracy": 0.779,
+      "auc": 0.839,
+      "rmse": 0.0773
+    },
+    "last_trained": "2026-09-06T08:00:00+00:00",
+    "owner": "Ravi",
+    "tags": [
+      "NLP",
+      "legacy"
+    ],
+    "description": "Transformer Fine-tuned for financial market research.",
+    "features": [
+      "MA20",
+      "RSI_14",
+      "MACD",
+      "Volume_Ratio"
+    ],
+    "training_snapshot": {
+      "rows": 1022,
+      "date_range": "2020-01-01 \u2192 2026-09-12",
+      "feature_count": 4,
+      "dataset": "market_factors_v1"
+    },
+    "versions": [
+      {
+        "version": "v1.0.7",
+        "metrics": {
+          "accuracy": 0.779,
+          "auc": 0.839,
+          "rmse": 0.0773
+        },
+        "hyperparameters": {
+          "random_state": 42,
+          "n_estimators": 250
+        },
+        "artifact_path": "artifacts/model_transformer/v1.0.7/model.joblib",
+        "created_at": "2026-09-06T08:00:00+00:00"
+      }
+    ],
+    "artifacts": [
+      {
+        "name": "model.joblib",
+        "path": "artifacts/model_transformer/v1.0.7/model.joblib",
+        "type": "pickle/joblib"
+      },
+      {
+        "name": "feature_schema.json",
+        "path": "artifacts/model_transformer/v1.0.7/feature_schema.json",
+        "type": "schema"
+      }
+    ],
+    "created_at": "2026-09-12T08:00:00+00:00",
+    "archived": true
+  }
+]
