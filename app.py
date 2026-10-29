@@ -4,6 +4,39 @@ from __future__ import annotations
 
 import streamlit as st
 
+# Bootstrap before importing models/providers; preserve the original root layout.
+import os
+import sys
+import hmac
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+for name in ("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS", "NUMEXPR_NUM_THREADS"):
+    os.environ.setdefault(name, "1")
+from market_ai.utils.cloud_config import setting
+
+st.set_page_config(page_title="AI Framework — AI Market Assistant", page_icon="📈", layout="wide", initial_sidebar_state="expanded")
+# Keep existing providers that read os.environ compatible with Cloud secrets.
+for name in ("GROQ_API_KEY", "GROQ_PRIMARY_API_KEY", "GROQ_SECONDARY_API_KEY", "LLM_PROVIDER", "OPENAI_API_KEY", "ANTHROPIC_API_KEY"):
+    value = setting(name)
+    if value:
+        os.environ[name] = value
+if setting("CLOUD_MODE", "false").lower() == "true":
+    password = setting("APP_PASSWORD")
+    if not password:
+        st.error("Set APP_PASSWORD in Streamlit Cloud secrets before using this deployment.")
+        st.stop()
+    if not st.session_state.get("cloud_authenticated"):
+        st.title("AI Framework")
+        with st.form("cloud_login"):
+            entered = st.text_input("Workspace password", type="password")
+            submitted = st.form_submit_button("Open workspace")
+        if submitted:
+            if hmac.compare_digest(entered.encode(), password.encode()):
+                st.session_state.cloud_authenticated = True
+                st.rerun()
+            st.error("Incorrect password.")
+        st.stop()
+
 from market_ai.analytics.router import render_analytics
 from market_ai.components.cards import render_hero
 from market_ai.components.chat import render_chat
@@ -18,12 +51,6 @@ from market_ai.utils.theme import load_css
 from market_ai.utils.vision_client import health_check
 
 
-st.set_page_config(
-    page_title="TradeGPT — AI Market Assistant",
-    page_icon="🤖",
-    layout="wide",
-    initial_sidebar_state="expanded",
-)
 load_css()
 
 
@@ -64,7 +91,7 @@ def render_pipeline_status() -> None:
     if healthy:
         st.caption("🟢 Vision pipeline: online")
     else:
-        st.caption("🔴 Vision pipeline: offline — start it with `python -m api.run`")
+        st.caption("🔴 Vision backend: unavailable — check the service and deployment secrets")
 
 
 # ── Route ─────────────────────────────────────────────────
@@ -103,16 +130,7 @@ elif page == "Chat":
     render_pipeline_status()
 
     if not st.session_state.pipeline_healthy:
-        st.warning(
-            "The vision pipeline isn't running. Start it in a separate terminal:\n\n"
-            "```\n"
-            "cd C:\\Users\\Khots\\vision_pipeline\n"
-            "$env:HF_HUB_DISABLE_SYMLINKS = \"1\"\n"
-            "$env:GROQ_API_KEY = \"gsk_...\"\n"
-            "python -m api.run\n"
-            "```\n\n"
-            "Then click below to re-check."
-        )
+        st.warning("The vision backend is unavailable or still waking up. Check BACKEND_URL and SERVICE_TOKEN, then re-check.")
         if st.button("Re-check pipeline"):
             st.session_state.pipeline_healthy = health_check()
             st.rerun()

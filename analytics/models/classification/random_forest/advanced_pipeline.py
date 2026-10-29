@@ -7,6 +7,8 @@ cross-validation, evaluation, feature importance, and recursive forecasting.
 """
 
 from __future__ import annotations
+from market_ai.utils.cloud_config import setting
+
 
 from datetime import date
 from typing import Any
@@ -530,12 +532,12 @@ class RandomForestAdvancedModel:
 
         search = GridSearchCV(
             estimator=RandomForestClassifier(
-                random_state=self.random_state, n_jobs=-1
+                random_state=self.random_state, n_jobs=(1 if setting("CLOUD_MODE", "false").lower() == "true" else -1)
             ),
             param_grid=grid,
             cv=tscv,
             scoring=self.scoring,
-            n_jobs=-1,
+            n_jobs=(1 if setting("CLOUD_MODE", "false").lower() == "true" else -1),
             verbose=0,
             refit=True,
         )
@@ -576,7 +578,7 @@ class RandomForestAdvancedModel:
 
         if self.model is None:
             self.model = RandomForestClassifier(
-                random_state=self.random_state, n_jobs=-1
+                random_state=self.random_state, n_jobs=(1 if setting("CLOUD_MODE", "false").lower() == "true" else -1)
             )
             self.model.fit(self.X_train, self.y_train)
 
@@ -694,7 +696,7 @@ class RandomForestAdvancedModel:
             self.y_test,
             n_repeats=5,
             random_state=self.random_state,
-            n_jobs=-1,
+            n_jobs=(1 if setting("CLOUD_MODE", "false").lower() == "true" else -1),
             scoring=self.scoring,
         )
 

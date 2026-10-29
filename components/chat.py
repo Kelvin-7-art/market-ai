@@ -194,7 +194,8 @@ def _run_vision_pipeline(att: Attachment) -> dict:
             analysis = analyze_image(image)
     except Exception:
         analysis = {"error": "Could not decode this image. Try another image file."}
-    cache[fingerprint] = copy.deepcopy(analysis)
+    if not analysis.get("error"):
+        cache[fingerprint] = copy.deepcopy(analysis)
     att.analysis = copy.deepcopy(analysis)
     st.session_state.analysis = copy.deepcopy(analysis)
     st.session_state.last_upload_name = att.name
@@ -473,6 +474,15 @@ def render_chat() -> None:
         if st.button("New chat", key="research_new_chat", use_container_width=True):
             _reset_chat()
             st.rerun()
+    from market_ai.utils.vision_client import hosted_backend, health_check
+    if hosted_backend():
+        st.caption("Images and extracted document text are sent to the Render backend and Groq when you send. Up to 3 images, 5 MB per file.")
+        with st.expander("Backend connection"):
+            if st.button("Test backend connection", key="research_backend_test"):
+                if health_check():
+                    st.success("Backend reachable; service token accepted; Groq key present.")
+                else:
+                    st.warning("Backend unavailable or not configured. Check Render and your deployment secrets.")
     _render_context()
 
     # Native container grows with the messages: no empty HTML chat-shell panel.
@@ -506,6 +516,9 @@ def render_chat() -> None:
     if not prompt and not uploads:
         return
 
+    if hosted_backend() and (sum(Path(f.name).suffix.lower().lstrip(".") in {"png", "jpg", "jpeg", "gif", "webp", "bmp"} for f in uploads) > 3 or any(f.size > 5 * 1024 * 1024 for f in uploads)):
+        st.error("Upload up to 3 images, with each file no larger than 5 MB.")
+        return
     with conversation:
         with st.spinner("Reading your files…"):
             attachments = [_build_attachment(file) for file in uploads]

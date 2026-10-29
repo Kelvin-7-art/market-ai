@@ -6,6 +6,8 @@ evaluate, and recursively forecast.
 """
 
 from __future__ import annotations
+from market_ai.utils.cloud_config import setting
+
 
 from datetime import date
 from typing import Any
@@ -261,7 +263,7 @@ class RandomForestBaseModel:
         self.model = RandomForestClassifier(
             n_estimators=self.n_estimators,
             random_state=self.random_state,
-            n_jobs=-1,
+            n_jobs=(1 if setting("CLOUD_MODE", "false").lower() == "true" else -1),
             max_depth=self.max_depth,
             class_weight=self.class_weight,
         )

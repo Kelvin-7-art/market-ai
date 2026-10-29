@@ -83,7 +83,33 @@ INTERPRETATION RULES
 # ============================================================
 def chat_completion(messages: list, analysis_json: dict) -> str:
     """Return a grounded reply or a clear setup/service error without raising."""
-    api_key = os.getenv("GROQ_API_KEY", "").strip()
+    from market_ai.utils.vision_client import hosted_backend, backend_request
+    from market_ai.utils.cloud_config import setting
+    if hosted_backend():
+        history = [m for m in messages if isinstance(m, dict) and m.get("role") in {"user", "assistant"}
+                   and isinstance(m.get("content"), str) and m["content"].strip()]
+        if not history or history[-1]["role"] != "user":
+            return "Please enter a question."
+        question = history[-1]["content"]
+        if len(question) > 1000:
+            return "Please shorten your question to 1000 characters."
+        try:
+            context = json.dumps(compact_context(analysis_json), ensure_ascii=False, default=str)
+        except ValueError as error:
+            return str(error)
+        if len(context.encode("utf-8")) > 12000:
+            return "Please use fewer images or a shorter document."
+        recent = []
+        used = 0
+        for message in reversed(history[:-1][-4:]):
+            size = len(message["content"].encode("utf-8"))
+            if used + size > 4000 or len(message["content"]) > 5000:
+                break
+            recent.insert(0, {"role": message["role"], "content": message["content"]})
+            used += size
+        result = backend_request("/chat", json={"question": question, "context": context, "history": recent})
+        return result.get("error") or result.get("reply") or "Backend returned an empty reply."
+    api_key = setting("GROQ_API_KEY")
     if not api_key:
         return 'GROQ_API_KEY is not set. Set $env:GROQ_API_KEY = "<your-key>" in the Streamlit terminal, then restart Streamlit.'
     try:

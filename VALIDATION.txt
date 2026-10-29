@@ -1,0 +1,13 @@
+Validation performed locally
+- Python source compilation passed.
+- requirements.txt installed successfully; direct dependency versions pinned.
+- Streamlit AppTest: password gate and Dashboard startup passed.
+- Chat, Projects, Model Registry, Settings and Analytics routes passed.
+- Analytics Chat AI, Models, Sentiment and Forecasting initial rendering passed.
+- Mock HTTP checks: PNG multipart upload, service-token header, hosted extraction
+  adaptation, follow-up request using /chat without /analyze, 401 and timeout passed.
+- No real Groq request, user credential, live Render change or Streamlit Cloud
+  deployment was used in these tests. Training performance and external Yahoo
+  availability are not established by initial-render tests.
+- Common API-key patterns were checked in text source; no matches found.
+- Uploaded Git history, environment secrets and build caches excluded.

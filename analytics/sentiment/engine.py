@@ -128,6 +128,9 @@ def _traditional_score(text: str) -> tuple[float, float]:
 @lru_cache(maxsize=1)
 def _finbert_pipeline() -> tuple[Any | None, str]:
     """Load FinBERT only when requested; keep the page usable without torch."""
+    from market_ai.utils.cloud_config import setting
+    if setting("CLOUD_MODE", "false").lower() == "true":
+        return None, "Cloud profile: finance lexicon fallback (FinBERT not loaded)"
     try:
         from transformers import pipeline
 

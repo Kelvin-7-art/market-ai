@@ -24,6 +24,12 @@ ROUTERS = {
 
 def render_classification_model(category: str, variant: str) -> None:
     """Dispatch a classification model family to its page router."""
+    from market_ai.utils.cloud_config import setting
+    if setting("CLOUD_MODE", "false").lower() == "true" and category in {"LSTM", "Transformer"}:
+        import streamlit as st
+        st.subheader(f"{category} / {variant}")
+        st.info("This training model remains available in the desktop app. The free cloud profile omits PyTorch to reduce memory use. Upload its exported JSON to Chat AI for interpretation.")
+        return
     ROUTERS.get(category, render_random_forest)(variant)
 
 
